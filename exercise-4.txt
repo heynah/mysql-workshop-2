@@ -1,0 +1,34 @@
+UPDATE [LOW_PRIORITY] [IGNORE] table_reference
+    SET col_name1={expr1|DEFAULT} [, col_name2={expr2|DEFAULT}] ...
+    [WHERE where_condition]
+    [ORDER BY ...]
+    [LIMIT row_count]
+    
+UPDATE [LOW_PRIORITY] [IGNORE] table_references
+    SET col_name1={expr1|DEFAULT} [, col_name2={expr2|DEFAULT}] ...
+    [WHERE where_condition]   
+    
+mysql> update Account set email = "email@email";
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from Account;                                                                                                                                                      
++----+-------------+----------+---------------------+---------------------+
+| id | email       | password | createdOn           | modifiedOn          |
++----+-------------+----------+---------------------+---------------------+
+|  1 | email@email | null     | 0000-00-00 00:00:00 | 0000-00-00 00:00:00 |
+|  2 | email@email |          | 0000-00-00 00:00:00 | NULL                |
++----+-------------+----------+---------------------+---------------------+
+2 rows in set (0.00 sec)
+
+mysql> update Account set email = "1email" where id=1;                                                                                                                                         
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Account;                                                                                                                                                                  
++----+-------------+----------+---------------------+---------------------+
+| id | email       | password | createdOn           | modifiedOn          |
++----+-------------+----------+---------------------+---------------------+
+|  1 | 1email      | null     | 0000-00-00 00:00:00 | 0000-00-00 00:00:00 |
+|  2 | email@email |          | 0000-00-00 00:00:00 | NULL                |
++----+-------------+----------+---------------------+---------------------+
