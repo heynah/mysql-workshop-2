@@ -32,3 +32,53 @@ mysql> select * from Account;
 |  1 | 1email      | null     | 0000-00-00 00:00:00 | 0000-00-00 00:00:00 |
 |  2 | email@email |          | 0000-00-00 00:00:00 | NULL                |
 +----+-------------+----------+---------------------+---------------------+
+
+mysql> update AddressBook set name = "Beyonce" where id=1;
+mysql> select * from AddressBook;
++----+-----------+---------+---------------------+------------+
+| id | accountId | name    | createdOn           | modifiedOn |
++----+-----------+---------+---------------------+------------+
+|  1 |         0 | Beyonce | 0000-00-00 00:00:00 | NULL       |
++----+-----------+---------+---------------------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from Entry;
++----+---------------+-----------+----------+----------+------+---------+----------------+----------------+------------------+-----------------+-----------------+
+| id | addressBookId | firstName | lastName | birthday | type | subtype | contentLineOne | contentLineTwo | contentLineThree | contentLineFour | contentLineFive |
++----+---------------+-----------+----------+----------+------+---------+----------------+----------------+------------------+-----------------+-----------------+
+|  1 |             0 |           | NULL     | NULL     | home | phone   |                | NULL           | NULL             | NULL            | NULL            |
+|  2 |             0 |           | NULL     | NULL     | home | phone   |                | NULL           | NULL             | NULL            | NULL            |
+|  3 |             0 |           | NULL     | NULL     | home | phone   |                | NULL           | NULL             | NULL            | NULL            |
++----+---------------+-----------+----------+----------+------+---------+----------------+----------------+------------------+-----------------+-----------------+
+3 rows in set (0.00 sec)
+
+mysql> update Entry set addressBookId= 001;
+Query OK, 3 rows affected (0.01 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+mysql> select * from Entry;
++----+---------------+-----------+----------+----------+------+---------+----------------+----------------+------------------+-----------------+-----------------+
+| id | addressBookId | firstName | lastName | birthday | type | subtype | contentLineOne | contentLineTwo | contentLineThree | contentLineFour | contentLineFive |
++----+---------------+-----------+----------+----------+------+---------+----------------+----------------+------------------+-----------------+-----------------+
+|  1 |             1 |           | NULL     | NULL     | home | phone   |                | NULL           | NULL             | NULL            | NULL            |
+|  2 |             1 |           | NULL     | NULL     | home | phone   |                | NULL           | NULL             | NULL            | NULL            |
+|  3 |             1 |           | NULL     | NULL     | home | phone   |                | NULL           | NULL             | NULL            | NULL            |
++----+---------------+-----------+----------+----------+------+---------+----------------+----------------+------------------+-----------------+-----------------+
+3 rows in set (0.00 sec)
+
+
+
+
+
+From demo:
+==========
+mysql> insert into People values (null,'john', 'smith'), (null, 'jane', 'john'), (null, 'tom', 'jane')
+select count(*) from People group by firstName;
+selet count(*), lastName from People group by lastname;
+alter table People add column age int;
+update People set age=45 where id=1;  //case operator update People set age= (case id when 1 then 45 when 2 then 40...);
+select firstName, lastName, age from People where age=(select max(age) from People);
+
+select max/min/avg/stddev(age), fristName from People group by firstName;
+select * from People order by firstName desc,lastName;
+order by X limit X offset X;
