@@ -1,0 +1,162 @@
+
+mysql> create database decodemtl_addressbook_import;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> show databases;
++------------------------------+
+| Database                     |
++------------------------------+
+| information_schema           |
+| c9                           |
+| decodemtl_addressbook        |
+| decodemtl_addressbook_import |
+| mysql                        |
+| performance_schema           |
++------------------------------+
+6 rows in set (0.01 sec)
+
+mysql> use decodemtl_addressbook_import;
+Database changed
+mysql> source data/import-table-structure.sql;
+Query OK, 2 rows affected (0.02 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Database changed
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> show tables;
++---------------------------------+
+| Tables_in_decodemtl_addressbook |
++---------------------------------+
+| Account                         |
+| AddressBook                     |
+| Entry                           |
++---------------------------------+
+3 rows in set (0.00 sec)
+
+source data/import-account.sql;
+source data/import-addressbook.sql;
+source data/import-entry.sql;
+mysql> describe Account;             +------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| id         | int(11)      | NO   | PRI | NULL    | auto_increment |
+| email      | varchar(255) | NO   |     | NULL    |                |
+| password   | varchar(40)  | NO   |     | NULL    |                |
+| createdOn  | datetime     | NO   |     | NULL    |                |
+| modifiedOn | datetime     | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+5 rows in set (0.02 sec)
+
+mysql> describe AddressBook;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| id         | int(11)      | NO   | PRI | NULL    | auto_increment |
+| accountId  | int(11)      | NO   |     | NULL    |                |
+| name       | varchar(255) | NO   |     | NULL    |                |
+| createdOn  | datetime     | NO   |     | NULL    |                |
+| modifiedOn | datetime     | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+5 rows in set (0.01 sec)
+
+mysql> describe Entry;
++------------------+---------------------------------+------+-----+---------+----------------+
+| Field            | Type                            | Null | Key | Default | Extra          |
++------------------+---------------------------------+------+-----+---------+----------------+
+| id               | int(11)                         | NO   | PRI | NULL    | auto_increment |
+| addressBookId    | int(11)                         | NO   |     | NULL    |                |
+| firstName        | varchar(255)                    | NO   |     | NULL    |                |
+| lastName         | varchar(255)                    | YES  |     | NULL    |                |
+| birthday         | datetime                        | YES  |     | NULL    |                |
+| type             | enum('home','work','other')     | NO   |     | NULL    |                |
+| subtype          | enum('phone','address','email') | NO   |     | NULL    |                |
+| contentLineOne   | varchar(255)                    | NO   |     | NULL    |                |
+| contentLineTwo   | varchar(255)                    | YES  |     | NULL    |                |
+| contentLineThree | varchar(255)                    | YES  |     | NULL    |                |
+| contentLineFour  | varchar(255)                    | YES  |     | NULL    |                |
+| contentLineFive  | varchar(255)                    | YES  |     | NULL    |                |
++------------------+---------------------------------+------+-----+---------+----------------+
+12 rows in set (0.00 sec)
+mysql> select email from Account where id=63;
++-------------------------------------------------+
+| email                                           |
++-------------------------------------------------+
+| consectetuer.rhoncus.Nullam@temporloremeget.org |
++-------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select name, accountId from AddressBook where accountId = 3;
++---------------------------------+-----------+
+| name                            | accountId |
++---------------------------------+-----------+
+| Donec Incorporated              |         3 |
+| Ipsum Nunc LLC                  |         3 |
+| In Consectetuer Ltd             |         3 |
+| Lacus Aliquam Rutrum Industries |         3 |
+| Ac Ltd                          |         3 |
+| Mauris Consulting               |         3 |
+| Ornare Corporation              |         3 |
++---------------------------------+-----------+
+7 rows in set (0.00 sec)
+
+mysql> select name,createdOn from AddressBook where name="Lorem Foundation";
++------------------+---------------------+
+| name             | createdOn           |
++------------------+---------------------+
+| Lorem Foundation | 2016-06-26 02:43:41 |
+| Lorem Foundation | 2015-05-04 14:28:16 |
++------------------+---------------------+
+2 rows in set (0.00 sec)
+
+mysql> select count(*) from Account;
++----------+
+| count(*) |
++----------+
+|     1000 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select count(*) from AddressBook;
++----------+
+| count(*) |
++----------+
+|     1100 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select count(*) from Entry;
++----------+
+| count(*) |
++----------+
+|     4000 |
++----------+
+1 row in set (0.00 sec)
+
+
+mysql> select min(birthday) from Entry;
++---------------------+
+| min(birthday)       |
++---------------------+
+| 1945-09-02 09:21:58 |
++---------------------+
+1 row in set (0.01 sec)
+
+
+
+
+
+
+
+
