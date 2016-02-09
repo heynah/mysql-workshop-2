@@ -1,0 +1,122 @@
+mysql> select count(birthday)from Entry where birthday<"1982-02-12";      
++-----------------+
+| count(birthday) |
++-----------------+
+|            2687 |
++-----------------+
+1 row in set (0.00 sec)
+mysql> select count(birthday)from Entry where birthday>"1965-01-01";                               
++-----------------+
+| count(birthday) |
++-----------------+
+|            2597 |
++-----------------+
+1 row in set (0.01 sec)
+
+mysql> select firstName,lastName,birthday from Entry where birthday =(select min(birthday) from Entry);                                                              
++-----------+----------+---------------------+
+| firstName | lastName | birthday            |
++-----------+----------+---------------------+
+| Abigail   | Rollins  | 1945-09-02 09:21:58 |
++-----------+----------+---------------------+
+
+mysql> select count(*) from Entry where type='home' or type= 'work';               
++----------+
+| count(*) |
++----------+
+|     2800 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select count(*) from Entry where type!='other';
++----------+
+| count(*) |
++----------+
+|     2800 |
++----------+
+1 row in set (0.01 sec)
+
+mysql> select count(*) from Entry where not type='other';                          
++----------+
+| count(*) |
++----------+
+|     2800 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select count(*) from Entry where subtype='phone';
++----------+
+| count(*) |
++----------+
+|      600 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> create or replace view `accountIdTally` as select accountId, count(*) from AddressBook group by accountId;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> show tables;
++---------------------------------+
+| Tables_in_decodemtl_addressbook |
++---------------------------------+
+| Account                         |
+| AddressBook                     |
+| Entry                           |
+| accountIdTally                  |
++---------------------------------+
+4 rows in set (0.00 sec)
+
+mysql> describe accountIdTally;                                                  
++-----------+------------+------+-----+---------+-------+
+| Field     | Type       | Null | Key | Default | Extra |
++-----------+------------+------+-----+---------+-------+
+| accountId | int(11)    | NO   |     | NULL    |       |
+| count(*)  | bigint(21) | NO   |     | 0       |       |
++-----------+------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from accountIdTally order by `count(*)` desc;                      
++-----------+----------+
+| accountId | count(*) |
++-----------+----------+
+|        14 |       19 |
+|         5 |       19 |
+|        42 |       18 |
+
+mysql> create or replace view `addressBookIdTally` as select addressBookId, count(*) from Entry group by addressBookId;
+
+mysql> show databases;
++------------------------------+
+| Database                     |
++------------------------------+
+| information_schema           |
+| c9                           |
+| decodemtl_addressbook        |
+| decodemtl_addressbook_import |
+| mysql                        |
+| performance_schema           |
++------------------------------+
+
+mysql> select * from addressBookIdTally order by `count(*)` desc;
++---------------+----------+
+| addressBookId | count(*) |
++---------------+----------+
+|            37 |       52 |
+|            20 |       50 |
+
+
+mysql> select * from Entry where subtype='phone' and contentLineOne like '(3__)%';
+39 rows in set (0.00 sec)
+
+mysql> select * from Entry where type='home' and subtype='phone' and contentLineOne not like '%5%';
+76 rows in set (0.01 sec)
+
+mysql> select * from Entry where type='work' and subtype='phone' and contentLineOne like '_-%';
+60 rows in set (0.00 sec)
+
+mysql> select * from Entry where type='work' and subtype='phone' and contentLineOne like '%-___-___-____';
+60 rows in set (0.00 sec)
+
+
+
+
